@@ -78,7 +78,7 @@
             <tr>
                 <td>Category: </td>
                 <td>
-                    <select name="Category">
+                    <select name="category">
 
                         <?php 
                             //get data from ddatabase
@@ -149,7 +149,6 @@
             $price = $_POST['price'];
             $current_image = $_POST['current_image'];
             $category = $_POST['category'];
-
             $featured = $_POST['featured'];
             $active = $_POST['active'];
 
@@ -169,7 +168,7 @@
                     //rename the image
                     $ext = end(explode('.', $image_name)); // get img ext
 
-                    $image_name = "Food-Name-".rand(0000, 9999).".".$ext; //rename image
+                    $image_name = "Food-Name-".rand(0000, 9999).'.'.$ext; //rename image
 
                     //get source path and destination path
                     $src_path = $_FILES['image']['tmp_name'];
@@ -202,14 +201,14 @@
                             $_SESSION['remove-failed'] = "<div class='error'>failed to remove current image.</div>";
                             header('location:'.SITEURL.'admin/manage-food.php');
                             die();
-                        }
+                        } 
 
                     }
                 }
-                else
-                {
-                    $image_name = $current_image;
-                }
+                // else
+                // {
+                //     $image_name = $current_image;
+                // }
             }
             else
             {
@@ -224,17 +223,19 @@
                 description = '$description',
                 price = $price,
                 image_name = '$image_name',
-                category_id = '$category',
+                category_id = $category,
                 featured = '$featured',
                 active = '$active'
                 WHERE id=$id
             ";
 
+            // echo $sql4;
+
             //execute query
-            $res4 = mysqli_query($conn, $sql3);
+            $res3 = mysqli_query($conn, $sql3);
 
             //check whether the query is executed  
-            if($res4 == true)
+            if($res3 == true)
             {
                 $_SESSION['update'] = "<div class='success'>Food Updated Successfully.</div>";
                 header('location:'.SITEURL.'admin/manage-food.php');
