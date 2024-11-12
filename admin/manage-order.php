@@ -5,44 +5,116 @@
         <h1>Manage order</h1>
 
                 <br /><br /><br />
+
+                <?php 
+                    if(isset($_SESSION['update']))
+                    {
+                        echo $_SESSION['update'];
+                        unset ($_SESSION['update']);
+                    }
+                ?>
+                <br><br>
                     
                 <table class="tbl-full">
                     <tr>
                         <th>S.N.</th>
-                        <th>Full Name</th>
-                        <th>Username</th>
+                        <th>Food</th>
+                        <th>Price</th>
+                        <th>Qty</th>
+                        <th>Total</th>
+                        <th>Order Date</th>
+                        <th>Status</th>
+                        <th>Customer Name</th>
+                        <th>Contact</th>
+                        <th>Email</th>
+                        <th>Address</th>
                         <th>Actions</th>
                     </tr>
 
-                    <tr>
-                        <td>1.</td>
-                        <td>derfla storm</td>
-                        <td>derflastorm</td>
-                        <td>
-                            <a href="#" class="btn-secondary">Update Admin</a>
-                            <a href="#" class="btn-danger">Delete Admin</a>
-                        </td>
-                    </tr>
+                    <?php
+                        //get all the orders
+                        $sql = "SELECT * FROM tbl_order ORDER BY id DESC";
 
-                    <tr>
-                        <td>2.</td>
-                        <td>derfla storm</td>
-                        <td>derflastorm</td>
-                        <td>
-                            <a href="#" class="btn-secondary">Update Admin</a>
-                            <a href="#" class="btn-danger">Delete Admin</a>
-                        </td>
-                    </tr>
+                        //execute
+                        $res = mysqli_query($conn, $sql);
 
-                    <tr>
-                        <td>3.</td>
-                        <td>derfla storm</td>
-                        <td>derflastorm</td>
-                        <td>
-                            <a href="#" class="btn-secondary">Update Admin</a>
-                            <a href="#" class="btn-danger">Delete Admin</a>
-                        </td>
-                    </tr>
+                        //count
+                        $count = mysqli_num_rows($res);
+                        
+                        $sn =1;
+
+                        if($count>0)
+                        {
+                            //Order available
+                            while($row=mysqli_fetch_assoc($res)){
+                                //get all order details
+                                     $id = $row['id'];
+                                     $food = $row['food'];
+                                     $price = $row['price'];
+                                     $qty = $row['qty'];
+                                     $total = $row['total'];
+                                     $order_date = $row['order_date'];                                  
+                                     $status = $row['status'];
+                                     $customer_name = $row['customer_name'];
+                                     $customer_contact = $row['customer_contact'];
+                                     $customer_email = $row['customer_email'];
+                                     $customer_address = $row['customer_address']; 
+                                     ?>
+
+                                            <tr>
+                                                <td><?php echo $sn++; ?></td>
+                                                <td><?php echo $food; ?></td>
+                                                <td><?php echo $price; ?></td>
+                                                <td><?php echo $qty; ?></td>
+                                                <td><?php echo $total; ?></td>
+                                                <td><?php echo $order_date; ?></td>
+                                                <td><?php  
+                                                        //Ordered, On Delivery, Delivered, Cancelled
+                                                        if($status=="Ordered")
+                                                        {
+                                                            echo "<label>$status<label/>";
+                                                        }
+                                                        elseif($status=="On Delivery")
+                                                        {
+                                                            echo "<label style='color: orange;'>$status<label/>";
+                                                        }
+                                                        elseif($status=="Delivered")
+                                                        {
+                                                            echo "<label style='color: green;'>$status<label/>";
+                                                        }
+                                                        elseif($status=="Cancelled")
+                                                        {
+                                                            echo "<label style='color: red;'>$status<label/>";
+                                                        }
+
+
+                                                    ?>
+                                                </td>
+                                                
+                                                <td><?php echo $customer_name; ?></td>
+                                                <td><?php echo $customer_contact; ?></td>
+                                                <td><?php echo $customer_email; ?></td>
+                                                <td><?php echo $customer_address; ?></td>
+                                                <td colspan="2">
+                                                    <a href="<?php echo SITEURL; ?>admin/update-order.php?id=<?php echo $id; ?>" class="btn-secondary btn-width">Update Order</a>
+                                                    
+                                                </td>
+                                            </tr>
+
+                                     <?php
+                            }
+                           
+                        }
+                        else
+                        {
+                            //Order not available
+                            echo "<tr><td colspan='12' class='error'>Orders not Available</td></tr>";
+                        }
+                    ?>
+
+                   
+
+                    
                 </table>
    </div>
 </div>
