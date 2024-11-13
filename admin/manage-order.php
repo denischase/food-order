@@ -72,7 +72,7 @@
                                                         //Ordered, On Delivery, Delivered, Cancelled
                                                         if($status=="Ordered")
                                                         {
-                                                            echo "<label>$status<label/>";
+                                                            echo "<label style='color: black;'>$status<label/>";
                                                         }
                                                         elseif($status=="On Delivery")
                                                         {
